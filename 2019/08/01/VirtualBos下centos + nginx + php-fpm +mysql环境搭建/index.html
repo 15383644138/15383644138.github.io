@@ -1,68 +1,228 @@
-extends base
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description"><title>一、centos + nginx + php-fpm + mysql环境搭建 | 人间且慢行</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/normalize/8.0.1/normalize.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/1.0.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/1.0.0/grids-responsive-min.css"><link rel="stylesheet" href="//lib.baomitu.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//lib.baomitu.com/jquery/3.4.0/jquery.min.js"></script><link rel="icon" mask sizes="any" href="/favicon.ico"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><meta name="referrer" content="no-referrer"><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">一、centos + nginx + php-fpm + mysql环境搭建</h1><a id="logo" href="/.">人间且慢行</a><p class="description"></p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">一、centos + nginx + php-fpm + mysql环境搭建</h1><div class="post-meta">Aug 1, 2019<span> | </span><span class="category"><a href="/categories/安全之路/">安全之路</a></span></div><div class="post-content"><a id="more"></a>
 
-block title
-  title= page.title + ' | ' + config.title
 
-block content
-  .post
-    h1.post-title= page.title
-    .post-meta= page.date.format('ll')
-      if page.categories.length > 0
-        span= ' | '
-        span.category
-          for category in page.categories.toArray()
-            a(href=url_for(category.path))= category.name
-      if theme.busuanzi == true
-        script(src='https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js', async)
-        span#busuanzi_container_page_pv= ' | '
-          span#busuanzi_value_page_pv
-          span= ' ' + __('Hits')
-      if theme.wordcount == true
-        include _partial/wordcount.pug
-    if theme.disqus
-      a.disqus-comment-count(data-disqus-identifier=page.path, href=url_for(page.path) + '#disqus_thread')
-    if theme.changyan
-      a.ds-thread-count(href=url_for(page.path) + '#SOHUCS')
-        span#changyan_count_unit(style='font-size: 15px; color: #6E7173;') 0
-        span= ' ' + __('Comment')
-      script(src='https://assets.changyan.sohu.com/upload/plugins/plugins.count.js', async)
-    if theme.valine.enable
-      a.disqus-comment-count( href=url_for(page.path) + '#vcomment')
-        span.valine-comment-count(data-xid=url_for(page.path))
-        span= ' ' + __('Comment')
-    if page.toc
-      div(class='clear')
-        div(id='toc' class='toc-article')
-          div(class='toc-title')= __('contents')
-          != toc(page.content, {list_number: theme.toc_number})
-    .post-content
-      != page.content
-    if theme.donate.enable == true
-      iframe(src='/donate/?AliPayQR=' + theme.donate.alipay_qr + '&WeChatQR=' + theme.donate.wechat_qr + '&GitHub=' + theme.donate.github + '&BTCQR=' + theme.donate.btc_qr + '&BTCKEY='+ theme.donate.btc_key + '&PayPal=' + theme.donate.paypal_url, style='overflow-x:hidden; overflow-y:hidden; border:0xp none #fff; min-height:240px; width:100%;', frameborder='0', scrolling='no')
+<h1 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h1><h2 id="VirtualBos安装centos7操作系统"><a href="#VirtualBos安装centos7操作系统" class="headerlink" title="VirtualBos安装centos7操作系统"></a>VirtualBos安装centos7操作系统</h2><ol>
+<li>进入vbox后，点击新建<br><img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190721/rYPmBZNPit.png" alt></li>
+<li>以上设置完成后，点击下一步 进行分配内存，使用建议的内存大小即可，根据宿主机的配置可以自己进行调整，这里的值可以理解为虚拟机最大可占用宿主机的多少内存。</li>
+</ol>
+<ol start="3">
+<li><p>这里有三个选项，可以选择使用已有的虚拟硬盘文件，或者先不添加虚拟硬盘，等创建好虚拟机后再添加，这里我们选择第二个现在创建虚拟硬盘<br><img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190721/TddT2ZirwR.png" alt></p>
+</li>
+<li><p>点击创建，进入虚拟硬盘文件类型选项，默认选项即可，默认选择的是VirtualBox虚拟机软件专用的磁盘映像格式，其他虚拟机软件可能无法读取。<br><img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190721/AaxsccxeHY.png" alt></p>
+</li>
+<li><p>点击下一步，进行设置如何分配虚拟硬盘，默认选项即可，两者有何不同界面上已经有很详细的说明了。</p>
+</li>
+<li><p>点击下一步，指定虚拟硬盘文件的存放位置和虚拟硬盘的大小。<br><img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190721/6Ct3EZKtny.png" alt><br>虚拟硬盘的大小使用第3步中推荐的硬盘大小即可</p>
+</li>
+<li><p>点击创建，虚拟机创建完成<br><img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190721/jx7mRffDcb.png" alt><br>主界面中已经看到刚刚创建的虚拟机。</p>
+</li>
+</ol>
+<h1 id="二、安装操作系统"><a href="#二、安装操作系统" class="headerlink" title="二、安装操作系统"></a>二、安装操作系统</h1><ol>
+<li>正常启动刚刚创建好的虚拟机</li>
+</ol>
+<h2 id="遇到的第一个问题"><a href="#遇到的第一个问题" class="headerlink" title="遇到的第一个问题"></a>遇到的第一个问题</h2><p><img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190721/bBbKAXx4CH.png" alt></p>
+<p> 解决办法：进入官网<br><a href="https://www.virtualbox.org/wiki/Downloads" target="_blank" rel="noopener">https://www.virtualbox.org/wiki/Downloads</a></p>
+<p>下载VirtualBox 6.0.10 Oracle VM VirtualBox扩展包<br><img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190721/YJHQXS2ak3.png" alt></p>
+<p>下载完成后,点击全局设定，扩展，右边的+号，安装即可<br><img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190721/zcCZDkp8n3.png" alt></p>
+<p> 1.正常启动刚刚创建好的虚拟机</p>
+<p><img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190721/tp63MA2Wi2.png" alt></p>
+<p>提示我们选择一个虚拟光盘文件(iso文件)或者光驱来启动虚拟电脑</p>
+<p>2.选择我们准备好的操作系统iso镜像文件，点击启动</p>
+<p><img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190721/m4FzCc5rFn.png" alt></p>
+<p>第一个选项是安装CentOS7，第二个选项是检查操作系统文件是否损坏并安装CentOS7。</p>
+<p>3.我们选择第一个选项按下回车键直接安装，进入语言选择界面</p>
+<p><img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190721/HJGGYEXFBT.png" alt></p>
+<p>选择中文-&gt;简体中文</p>
+<p>4.点击界面右下角的继续按钮进行下一步</p>
+<p><img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190721/FRN7Ye5F67.png" alt></p>
+<p>提示先完成带有黄色叹号的内容，否则无法进行下一步，我们看到安装位置处于此状态，并显示已选择自动分区</p>
+<p> 5.黄色叹号只是警告我们默认使用了自动分区，目的是让我们确认一下，是否需要手动分区，我们点进去<br><img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190721/ZXwijXCnE7.png" alt></p>
+<p>如果不需要手动分区，还使用默认的自动分区进行安装的话，我们直接点击左上角的完成退出</p>
+<p>6.退出后回到刚刚那个摘要的界面，发现黄色感叹号不见了<br><img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190721/m2Hmh3ZRfX.png" alt></p>
+<p>右下角可以开始安装了，不过安装之前我们需要把以太网打开，否则系统安装后无法联网，并且在命令行操作系统内开启网络需要修改配置相对麻烦。</p>
+<p>7.摘要的界面上可以看到网络和主机名的显示为未链接，我们点进去</p>
+<p><img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190721/DDHaats4Ec.png" alt></p>
+<p>点击打开以太网，点击完成退出</p>
+<p>8.此时的网络和主机名显示有线已连接</p>
+<p> <img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190721/FxsmMkT2hb.png" alt></p>
+<p>9.如果需要图形界面，可以点击软件选择，选择基本环境(如果需要图形界面请下载完整版的操作系统iso镜像文件)</p>
+<p><img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190721/TtTQiE3wKh.png" alt></p>
+<p>这里选择最小安装即可，linux作为服务器时一般不需要图形界面(图形界面会消耗掉一定的硬件性能)，有一个终端仿真器，然后能够通过shell命令去操作系统就足够了。</p>
+<p>10.回到安装信息摘要界面，点击开始安装</p>
+<p><img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190721/sQAp5KQ2Y3.png" alt></p>
+<p>警告我们设置root密码和创建用户，并且下面显示已经开始安装操作系统</p>
+<p>11.设置root密码</p>
+<p><img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190721/KmNF6nkJNj.png" alt></p>
+<p>点击完成两次完成root密码设置</p>
+<p>12.回到配置界面，发现创建用户的警告消失了</p>
+<p><img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190721/mFT3QeKNf7.png" alt></p>
+<p>是因为没设置root密码之前系统内没有用户，警告我们创建一个用户，设置了root密码也就是创建了root用户，所以警告消失了</p>
+<p> 13.静静等待安装完成即可</p>
+<p><img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190721/ZPXctJBjZR.png" alt></p>
+<p>完成后点击重启</p>
+<p>14.进入系统启动界面</p>
+<p>发现启动时有两个选项，不过第二个选项我们不经常用，因为它是急救模式启动的选项（系统出现问题不能正常启动时使用并修复系统）</p>
+<p>15.选择第一项 按下回车启动centos系统</p>
+<p>输入用户：root，密码：安装时设置的root密码</p>
+<p>16.登陆成功</p>
+<p>VirtualBox下安装CentOS7系统到此全部结束。</p>
+<h1 id="三：网络设置"><a href="#三：网络设置" class="headerlink" title="三：网络设置"></a>三：网络设置</h1><p>采用无线网设置<br>1.网卡1<br><img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190722/fXkcreQ4dR.png" alt></p>
+<p>连接方式为网络地址转换(nat)，用于访问外网</p>
+<p>2.网卡2</p>
+<p><img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190722/jDn6yaEEcA.png" alt></p>
+<p>连接方式为仅主机(Host-Only)网络，界面名称选择virtualBox安装后自动生成的以太网卡适配器，用于与宿主机通信</p>
+<p>3.virtualBox安装后多出来的那个网络连接，它使用的网卡与虚拟机的网卡2是相同的<br><img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190722/NkFzK7Q6wb.png" alt></p>
+<p>宿主机wifi时配置比较简单，以上几步即可。</p>
+<p>到此网络配置结束，已经成功配好了宿主机ping通虚拟机、虚拟机ping通宿主机，虚拟机ping通外网。</p>
+<h1 id="四、centos-nginx-php-fpm-mysql的简单配置"><a href="#四、centos-nginx-php-fpm-mysql的简单配置" class="headerlink" title="四、centos + nginx + php-fpm +mysql的简单配置"></a>四、centos + nginx + php-fpm +mysql的简单配置</h1><p>安装约定（这个根据自己习惯，可自行修改）<br>1.软件源码包我都下载到/usr/local/src这个目录下<br>2.软件一般都编译安装到/usr/local这个目录下</p>
+<p>安装基础库<br><code>yum -y install gcc gcc-c++ openssl-devel zlib-devel pcre pcre-devel</code></p>
+<p>安装软件源<br><code>rpm -Uvh http://repo.webtatic.com/yum/el6/latest.rpm</code></p>
+<p>编译安装nginx</p>
+<p>切换到下载目录<br><code>cd /usr/local/src</code></p>
+<p>安装wget工具<br><code>yum -y install wget</code></p>
+<p>下载源码包<br><code>wget http://nginx.org/download/nginx-1.6.2.tar.gz</code></p>
+<p>解压源码包<br><code>tar zxvf  nginx-1.6.2.tar.gz</code></p>
+<p>切换到解压目录<br><code>cd nginx-1.6.2</code></p>
+<p>编译前配置<br><code>./configure  --prefix=/usr/local/nginx</code></p>
+<p>如果没什么错误即可进行编译安装<br><code>make &amp;&amp; make install</code></p>
+<p>至此nginx就安装完了，可以执行下面命令启动它<br><code>/usr/local/nginx/sbin/nginx</code></p>
+<p>安装php-fpm时遇到个问题：<strong>centos yum报错Loaded plugins: fastestmirror，忘记截图了</strong></p>
+<h3 id="解决方式："><a href="#解决方式：" class="headerlink" title="解决方式："></a>解决方式：</h3><ul>
+<li>输入：<code>vim /etc/yum.conf</code></li>
+<li>修改：<code>plugins=0</code></li>
+<li>输入：<code>vim  /etc/yum/pluginconf.d/fastestmirror.conf</code></li>
+<li>修改：enabled = 0</li>
+</ul>
+<p>安装php-fpm</p>
+<p><code>yum -y install php56w-fpm</code></p>
+<p>修改配置让nginx将访问到的php文件转发给php-fpm处理<br><code>vi /usr/local/nginx/conf/nginx.conf</code></p>
+<p>找到</p>
+<figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">location</span> / &#123;</span><br><span class="line">        root   html;</span><br><span class="line">        <span class="keyword">index</span>  <span class="keyword">index</span>.html <span class="keyword">index</span>.htm;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
 
-    if theme.post_copyright.enable == true && page.copyright != false
-      div
-        ul.post-copyright
-          li.post-copyright-author
-            strong= __('copyright_author_prefix')
-            = theme.post_copyright.author
-          li.post-copyright-link
-            strong= __('copyright_link_prefix')
-            a(href='/' + page.path)= page.permalink
-          li.post-copyright-license
-            strong= __('copyright_declare_prefix')
-            if theme.post_copyright.copyright_text
-              != theme.post_copyright.copyright_text
-            else
-              != __('copyright_default_text')
-      br
+<p>修改成</p>
+<figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">location</span> / &#123;</span><br><span class="line">        root   html;</span><br><span class="line">        <span class="keyword">index</span>  <span class="keyword">index</span>.html <span class="keyword">index</span>.htm <span class="keyword">index</span>.php;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
 
-    if theme.shareto == true
-      script(type='text/javascript', src=url_for(theme.js) + '/share.js' + '?v=' + theme.version, async)
-      a.article-share-link(data-url=page.permalink, data-id=page._id, data-qrcode=qrcode(page.permalink))= __('shareto')
+<p>然后在server{}里面添加如下内容</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">location</span> <span class="regexp">~ \.php$</span> &#123;</span><br><span class="line">        <span class="attribute">root</span>           html;</span><br><span class="line">        <span class="attribute">fastcgi_pass</span>   <span class="number">127.0.0.1:9000</span>;</span><br><span class="line">        <span class="attribute">fastcgi_index</span>  index.php;</span><br><span class="line">        <span class="attribute">fastcgi_param</span>  SCRIPT_FILENAME  <span class="variable">$document_root</span><span class="variable">$fastcgi_script_name</span>;</span><br><span class="line">        <span class="attribute">include</span>        fastcgi_params;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
 
-    include _partial/tag.pug
-    include _partial/post_nav.pug
+<p>其中 /usr/local/nginx/html/为你的存放php文件目录，可自行修改</p>
+<p>安装完php-fpm即可重启它<br><code>service php-fpm start</code></p>
+<p>同时平滑重启一下nginx<br><code>/usr/local/nginx/sbin/nginx -s reload</code></p>
+<h1 id="安装mysql"><a href="#安装mysql" class="headerlink" title="安装mysql"></a>安装mysql</h1><p>直接安装的时候出现了报错，因此百度了一些其他资料，换了一个帖子。</p>
+<p>首先增加MySQL7的源</p>
+<p><code>rpm -Uvh http://repo.mysql.com/mysql57-community-release-el7-7.noarch.rpm</code><br><img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190721/da5RaHHWx7.jpg" alt><br>复制上面代码并执行</p>
+<p>安装MySQL</p>
+<p><code>yum install mysql-server mysql-devel mysql</code><br><img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190721/QY5CKZGjzB.jpg" alt><br>安装</p>
+<p>y继续 </p>
+<p><img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190721/HsKBabjifw.jpg" alt></p>
+<p>y继续 MySQL安装需要一些时间 耐心等待一下</p>
+<p><img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190721/W5kSkxRCQ6.jpg" alt><br>y继续 </p>
+<p>安装完成<br><img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190721/aKTN6StTbh.jpg" alt><br>上图表示MySQL安装完成</p>
+<p>启动mysql<br><code>service mysqld start</code></p>
+<p>至此lnmp其实已经安装完成</p>
+<p>补充：</p>
+<p>不过你还可以安装一些php常用模块和设置一些服务开机启动</p>
+<p>安装php常用模块</p>
+<figure class="highlight smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y install php56w-devel php56w-gd php56w-mbstring php56w-mysql php56w-pdo php56w-xml</span><br></pre></td></tr></table></figure>
 
-    if page.comments
-      include _partial/comments.pug
+<p>设置mysql和php-fpm开机启动<br><code>chkconfig mysqld on</code><br><code>chkconfig php-fpm on</code></p>
+<h2 id="接下来打开centos的80-3306，9000端口，使宿主机可以访问我们的网站"><a href="#接下来打开centos的80-3306，9000端口，使宿主机可以访问我们的网站" class="headerlink" title="接下来打开centos的80,3306，9000端口，使宿主机可以访问我们的网站"></a>接下来打开centos的80,3306，9000端口，使宿主机可以访问我们的网站</h2><p>允许相应的端口</p>
+<p><code>firewall-cmd --zone=public --add-port=80/tcp --permanent</code></p>
+<p><code>firewall-cmd --zone=public --add-port=3306/tcp --permanent</code></p>
+<p><code>firewall-cmd --zone=public --add-port=9000/tcp --permanent</code></p>
+<p>重新载入配置</p>
+<p><code>firewall-cmd --reload</code></p>
+<p><img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190722/zWiNckbzFc.png" alt></p>
+<h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>可以正常访问ip，但访问index.php的时候是下载php文件<br><img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190722/hpFXBiwGsz.png" alt><br>通过百度，发现还是nginx没有配置好，重新进行配置，<br>之前把需要添加的代码前面加了#号，去除即可，宿主机可以访问index.php</p>
+<p><img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190722/EpfSKBPe8m.png" alt></p>
+<h1 id="配置mysql以及加固"><a href="#配置mysql以及加固" class="headerlink" title="配置mysql以及加固"></a>配置mysql以及加固</h1><h2 id="配置mysql7"><a href="#配置mysql7" class="headerlink" title="配置mysql7"></a>配置mysql7</h2><p>下面启动mysql </p>
+<p><code>启动: service mysqld start</code></p>
+<p><code>停止: service mysqld stop</code></p>
+<p>需要先启动mysql</p>
+<p>再查看一下mysql的默认密码</p>
+<p><code>grep &#39;temporary password&#39; /var/log/mysqld.log</code></p>
+<p><img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190728/WkmDKrtsQy.png" alt><br>密码是随机的 </p>
+<p><img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190728/BECHi34QQ8.png" alt></p>
+<p>使用默认密码链接成功现在还不能进行任何操作，必须先修改密码 当前版本的mysql对密码强度要求就高</p>
+<p><code>ALTER USER &#39;root&#39;@&#39;localhost&#39; IDENTIFIED BY &#39;GuYuePass666!&#39;;</code></p>
+<p>下面刷新权限</p>
+<p><code>FLUSH PRIVILEGES;</code></p>
+<p><img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190728/4bHpkk48tY.png" alt></p>
+<p>然后我们退出mysql重新连接就是我们设置的密码了!</p>
+<h2 id="测试php是否可以连接mysql"><a href="#测试php是否可以连接mysql" class="headerlink" title="测试php是否可以连接mysql"></a>测试php是否可以连接mysql</h2><p><code>cd /usr/local/nginx/html</code></p>
+<p><code>vi index.php</code></p>
+<p>修改index.php文件，输入以下代码，测试是否可以连接mysql</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="php"><span class="meta">&lt;?php</span> </span></span><br><span class="line"><span class="php">$link=mysql_connect(<span class="string">"localhost"</span>,<span class="string">"root"</span>,<span class="string">"123"</span>); </span></span><br><span class="line"><span class="php"><span class="keyword">if</span>(!$link) <span class="keyword">echo</span> <span class="string">"FAILD!连接错误，用户名密码不对"</span>; </span></span><br><span class="line"><span class="php"><span class="keyword">else</span> <span class="keyword">echo</span> <span class="string">"OK!可以连接"</span>; </span></span><br><span class="line"><span class="php"><span class="meta">?&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<p><img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190728/wMhDzjn5Am.png" alt></p>
+<p>连接成功</p>
+<h2 id="加固"><a href="#加固" class="headerlink" title="加固"></a>加固</h2><h4 id="nginx加固"><a href="#nginx加固" class="headerlink" title="nginx加固"></a>nginx加固</h4><h3 id="4-1日志配置"><a href="#4-1日志配置" class="headerlink" title="4.1日志配置"></a>4.1日志配置</h3><p>1、备份nginx.conf 配置文件。<br><code>cp -pdr /usr/local/nginx/conf/nginx.conf /usr/local/nginx/conf/nginx11.conf</code><br><img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190728/5ZmpzNNCce.png" alt><br>　　　　修改配置，按如下设置日志记录文件、记录内容、记录格式，添加标签为main的log_format格式</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(http标签内，在所有的server标签内可以调用)：</span><br><span class="line">log_format  main  <span class="string">'<span class="subst">$remote_addr</span> - <span class="subst">$remote_user</span> [<span class="subst">$time_local</span>] "<span class="subst">$request</span>" '</span></span><br><span class="line">   <span class="string">'<span class="subst">$status</span> <span class="subst">$body_bytes_sent</span> "<span class="subst">$http_referer</span>" '</span></span><br><span class="line">   <span class="string">'"<span class="subst">$http_user_agent</span>" "<span class="subst">$http_x_forwarded_for</span>"'</span>;</span><br></pre></td></tr></table></figure>
+
+<p>2、在server标签内，定义日志路径</p>
+<p>access_log logs/host.access.log main</p>
+<p>3、保存，然后后重启nginx服务。<br> 平滑重启：<code>/usr/local/nginx/sbin/nginx -s reload</code></p>
+<h3 id="4-2-禁止目录浏览"><a href="#4-2-禁止目录浏览" class="headerlink" title="4.2 禁止目录浏览"></a>4.2 禁止目录浏览</h3><p>　备份nginx.conf配置文件。</p>
+<p>　　编辑配置文件，HTTP模块添加如下一行内容：</p>
+<p><code>autoindex off;</code></p>
+<p>保存，然后后重启nginx服务。</p>
+<h3 id="隐藏版本信息"><a href="#隐藏版本信息" class="headerlink" title="隐藏版本信息"></a>隐藏版本信息</h3><p>备份nginx.conf配置文件。</p>
+<p>编辑配置文件，添加http模块中如下一行内容：</p>
+<p><code>server_tokens off;</code></p>
+<p>保存，然后后重启nginx服务。</p>
+<h3 id="限制HTTP请求方法"><a href="#限制HTTP请求方法" class="headerlink" title="限制HTTP请求方法"></a>限制HTTP请求方法</h3><p>备份nginx.conf配置文件。</p>
+<p>编辑配置文件，添加如下内容：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> ($request_method !~ ^(GET<span class="params">|HEAD|</span>POST)$ ) &#123;</span><br><span class="line"><span class="keyword">return</span> <span class="number">444</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>保存，然后后重启nginx服务。</p>
+<p>备注：只允许常用的GET和POST方法，顶多再加一个HEAD方法</p>
+<h3 id="限制并发和速度"><a href="#限制并发和速度" class="headerlink" title="限制并发和速度"></a>限制并发和速度</h3><p>备份nginx.conf配置文件。</p>
+<p>编辑配置文件，在server标签内添加如下内容：</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">limit_zone one <span class="variable">$binary_remote_addr</span> 10m;</span><br><span class="line">server</span><br><span class="line">&#123;</span><br><span class="line">     listen   80;</span><br><span class="line">     server_name down.test.com;</span><br><span class="line">     index index.html index.htm index.php;</span><br><span class="line">     root  /usr/local/www;</span><br><span class="line">     #Zone limit;</span><br><span class="line">     location / &#123;</span><br><span class="line">         limit_conn one 1;</span><br><span class="line">         limit_rate 20k;</span><br><span class="line">     &#125;</span><br><span class="line">………</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　保存，然后后重启nginx服务。</p>
+<h3 id="控制超时时间"><a href="#控制超时时间" class="headerlink" title="控制超时时间"></a>控制超时时间</h3><p>　　备份nginx.conf配置文件。</p>
+<p>　　编辑配置文件，具体设置如下：</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">client_body_timeout <span class="number">10</span><span class="comment">;  #设置客户端请求主体读取超时时间</span></span><br><span class="line">client_header_timeout <span class="number">10</span><span class="comment">;  #设置客户端请求头读取超时时间</span></span><br><span class="line">keepalive_timeout <span class="number">5</span> <span class="number">5</span><span class="comment">;  #第一个参数指定客户端连接保持活动的超时时间，第二个参数是可选的，它指定了消息头保持活动的有效时间</span></span><br><span class="line">send_timeout10<span class="comment">;</span></span><br><span class="line"></span><br><span class="line"> <span class="comment">#指定响应客户端的超时时间</span></span><br></pre></td></tr></table></figure>
+
+<p>　　保存，然后后重启nginx服务。
+　　</p>
+<h2 id="问题-1"><a href="#问题-1" class="headerlink" title="问题"></a>问题</h2><p>1.应该是放在server{}里面的<br>2.报错，无法执行<br><img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190728/28DXBhJHDj.png" alt></p>
+<p>解决办法：格式不对，少了2个空格<br><img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190728/iFJ5CTnzej.png" alt></p>
+<h2 id="mysql加固"><a href="#mysql加固" class="headerlink" title="mysql加固"></a>mysql加固</h2><p>登陆mysql；</p>
+<h3 id="1-修改root用户口令，删除空口令"><a href="#1-修改root用户口令，删除空口令" class="headerlink" title="1.修改root用户口令，删除空口令"></a>1.修改root用户口令，删除空口令</h3><p>缺省安装的MySQL的root用户是空密码的，为了安全起见，必须修改为强密码，所谓的强密码，至少8位，由字母、数字和符号组成的不规律密码。使用MySQL自带的命令mysaladmin修改root密码，同时也可以登陆数据库，修改数据库mysql下的user表的字段内容，修改方法如下所示：</p>
+<figure class="highlight n1ql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"> /usr/local/mysql/bin/mysqladmin -u root password “upassword” //使用mysqladmin</span><br><span class="line">#mysql&gt; use mysql;</span><br><span class="line">#mysql&gt; <span class="keyword">update</span> <span class="keyword">user</span> <span class="keyword">set</span> <span class="keyword">password</span>=<span class="keyword">password</span>(‘upassword’) <span class="keyword">where</span> <span class="keyword">user</span>=’root’;</span><br><span class="line">#mysql&gt; flush privileges;</span><br></pre></td></tr></table></figure>
+
+<p>//强制刷新内存授权表，否则用的还是在内存缓冲的口令</p>
+<p><img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190728/WtRKxkNkZZ.png" alt></p>
+<h3 id="2-删除默认数据库和数据库用户"><a href="#2-删除默认数据库和数据库用户" class="headerlink" title="2.删除默认数据库和数据库用户"></a>2.删除默认数据库和数据库用户</h3><p>一般情况下，MySQL数据库安装在本地，并且也只需要本地的php脚本对mysql进行读取，所以很多用户不需要，尤其是默认安装的用户。MySQL初始化后会自动生成空用户和test库，进行安装的测试，这会对数据库的安全构成威胁，有必要全部删除，最后的状态只保留单个root即可，当然以后根据需要增加用户和数据库。</p>
+<figure class="highlight n1ql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#mysql&gt; show databases;</span><br><span class="line">#mysql&gt; <span class="keyword">drop</span> <span class="keyword">database</span> test; //删除数据库test</span><br><span class="line">#use mysql;</span><br><span class="line">#<span class="keyword">delete</span> <span class="keyword">from</span> db; //删除存放数据库的表信息，因为还没有数据库信息。</span><br><span class="line">#mysql&gt; <span class="keyword">delete</span> <span class="keyword">from</span> <span class="keyword">user</span> <span class="keyword">where</span> <span class="keyword">not</span> (<span class="keyword">user</span>=’root’) ; // 删除初始非root的用户</span><br><span class="line">#mysql&gt; <span class="keyword">delete</span> <span class="keyword">from</span> <span class="keyword">user</span> <span class="keyword">where</span> <span class="keyword">user</span>=’root’ <span class="keyword">and</span> <span class="keyword">password</span>=”; //删除空密码的root，尽量重复操作</span><br><span class="line">Query OK, 2 rows affected (0.00 sec)</span><br><span class="line">#mysql&gt; flush privileges; //强制刷新内存授权表。</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-改变默认mysql管理员帐号"><a href="#3-改变默认mysql管理员帐号" class="headerlink" title="3.改变默认mysql管理员帐号"></a>3.改变默认mysql管理员帐号</h3><h3 id="4-关于密码的管理"><a href="#4-关于密码的管理" class="headerlink" title="4.关于密码的管理"></a>4.关于密码的管理</h3><p>密码是数据库安全管理的一个很重要因素，不要将纯文本密码保存到数据库中。如果你的计算机有安全危险，入侵者可以获得所有的密码并使用它们。相反，应使用MD5()、SHA1()或单向哈希函数。也不要从词典中选择密码，有专门的程序可以破解它们，请选用至少八位，由字母、数字和符号组成的强密码。在存取密码时，使用mysql的内置函数password（）的sql语句，对密码进行加密后存储。例如以下方式在users表中加入新用户。</p>
+<p><code>#mysql&gt; insert into users values (1,password(1234),’test’);</code></p>
+<h3 id="6-用户目录权限限制"><a href="#6-用户目录权限限制" class="headerlink" title="6.用户目录权限限制"></a>6.用户目录权限限制</h3><p>默认的mysql是安装在/usr/local/mysql，而对应的数据库文件在/usr/local/mysql/var目录下，因此，必须保证该目录不能让未经授权的用户访问后把数据库打包拷贝走了，所以要限制对该目录的访问。确保mysqld运行时，只使用对数据库目录具有读或写权限的linux用户来运行。</p>
+<p><code>chown -R root /usr/local/mysql/</code></p>
+<p>//mysql主目录给root<br><code>chown -R mysql.mysql /usr/local/mysql/var</code></p>
+<p>//确保数据库目录权限所属mysql用户</p>
+<h3 id="7-限制连接用户的数量"><a href="#7-限制连接用户的数量" class="headerlink" title="7.限制连接用户的数量"></a>7.限制连接用户的数量</h3><p>数据库的某用户多次远程连接，会导致性能的下降和影响其他用户的操作，有必要对其进行限制。可以通过限制单个账户允许的连接数量来实现，设置my.cnf文件的mysqld中的max_user_connections变量来完成。GRANT语句也可以支持 资源控制选项来限制服务器对一个账户允许的使用范围。</p>
+<p><code>vi /etc/my.cnf</code></p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[mysqld]</span></span><br><span class="line"><span class="attr">max_user_connections</span>= <span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+<p> 参考：</p>
+<ul>
+<li><p>VirtualBox下安装CentOS7系统:<a href="https://www.cnblogs.com/hihtml5/p/8217062.html" target="_blank" rel="noopener">https://www.cnblogs.com/hihtml5/p/8217062.html</a></p>
+</li>
+<li><p>centos+nginx+php-fpm+mysql的简单配置:<a href="https://blog.csdn.net/qq_42465907/article/details/80738480" target="_blank" rel="noopener">https://blog.csdn.net/qq_42465907/article/details/80738480</a></p>
+</li>
+<li><p>Centos7手把手教你使用YUM方式安装并配置Nginx+php7-fpm+MySQL:<a href="https://blog.csdn.net/qq_29164079/article/details/84391347" target="_blank" rel="noopener">https://blog.csdn.net/qq_29164079/article/details/84391347</a></p>
+</li>
+<li><p>CentOS7搭建配置的Nginx+PHP+MySQL的: <a href="https://www.jianshu.com/p/495a02eb2672" target="_blank" rel="noopener">https://www.jianshu.com/p/495a02eb2672</a></p>
+</li>
+<li><p>测试PHP连接MYSQL成功与否的代码:<a href="https://blog.csdn.net/yangning007911/article/details/78213757" target="_blank" rel="noopener">https://blog.csdn.net/yangning007911/article/details/78213757</a></p>
+</li>
+<li><p>【中间件安全】Nginx安全加固规范:<a href="https://blog.csdn.net/qq_23936389/article/details/85013923" target="_blank" rel="noopener">https://blog.csdn.net/qq_23936389/article/details/85013923</a></p>
+</li>
+<li><p>Mysql安全加固:<a href="https://blog.csdn.net/wz_cow/article/details/82156011" target="_blank" rel="noopener">https://blog.csdn.net/wz_cow/article/details/82156011</a></p>
+</li>
+</ul>
+</div><div class="tags"><a href="/tags/安全/">安全</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"><input type="hidden" name="sitesearch" value="http://yoursite.com"></form></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/安全之路/">安全之路</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"><a href="/tags/安全/" style="font-size: 15px;">安全</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2019/08/01/VirtualBos下centos + nginx + php-fpm +mysql环境搭建/">一、centos + nginx + php-fpm + mysql环境搭建</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> 友情链接</i></div><ul></ul><a target="_blank"></a><ul></ul><a target="_blank"></a><ul></ul><a target="_blank"></a></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2019 <a href="/." rel="nofollow">人间且慢行.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css"><script type="text/javascript" color="0,0,0" opacity="0.5" zindex="-2" count="50" src="//lib.baomitu.com/canvas-nest.js/2.0.4/canvas-nest.umd.js"></script><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>
