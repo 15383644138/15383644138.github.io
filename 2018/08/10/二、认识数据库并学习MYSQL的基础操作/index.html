@@ -1,0 +1,180 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description"><title>二、认识数据库并学习MYSQL的基础操作 | 人间且慢行</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/normalize/8.0.1/normalize.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/1.0.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/1.0.0/grids-responsive-min.css"><link rel="stylesheet" href="//lib.baomitu.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//lib.baomitu.com/jquery/3.4.0/jquery.min.js"></script><link rel="icon" mask sizes="any" href="/favicon.ico"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><meta name="referrer" content="no-referrer-when-downgrade"><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">二、认识数据库并学习MYSQL的基础操作</h1><a id="logo" href="/.">人间且慢行</a><p class="description"></p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">二、认识数据库并学习MYSQL的基础操作</h1><div class="post-meta">Aug 10, 2018<span> | </span><span class="category"><a href="/categories/信安之路/">信安之路</a></span><script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script><span id="busuanzi_container_page_pv"> | <span id="busuanzi_value_page_pv"></span><span> 阅读</span></span></div><div class="clear"><div class="toc-article" id="toc"><div class="toc-title">文章目录</div><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#一、数据库介绍"><span class="toc-number">1.</span> <span class="toc-text">一、数据库介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1、什么是数据库？"><span class="toc-number">1.1.</span> <span class="toc-text">1、什么是数据库？</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#数据库（database）"><span class="toc-number">1.1.1.</span> <span class="toc-text">数据库（database）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2、什么是关系型数据库？"><span class="toc-number">1.1.1.1.</span> <span class="toc-text">2、什么是关系型数据库？</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#常见的关系型数据库："><span class="toc-number">1.1.1.1.1.</span> <span class="toc-text">常见的关系型数据库：</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#关系型数据库的特点："><span class="toc-number">1.1.1.1.2.</span> <span class="toc-text">关系型数据库的特点：</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#优点"><span class="toc-number">1.1.1.1.2.1.</span> <span class="toc-text">优点</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#缺点"><span class="toc-number">1.1.1.1.2.2.</span> <span class="toc-text">缺点</span></a></li></ol></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#什么是非关系型数据库？"><span class="toc-number">1.1.1.2.</span> <span class="toc-text">什么是非关系型数据库？</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#常见非关系模型数据库："><span class="toc-number">1.1.1.2.1.</span> <span class="toc-text">常见非关系模型数据库：</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#非关系型数据库的特点："><span class="toc-number">1.1.1.2.2.</span> <span class="toc-text">非关系型数据库的特点：</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#优点-1"><span class="toc-number">1.1.1.2.2.1.</span> <span class="toc-text">优点</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#缺点-1"><span class="toc-number">1.1.1.2.2.2.</span> <span class="toc-text">缺点</span></a></li></ol></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#总结"><span class="toc-number">1.1.1.3.</span> <span class="toc-text">总结</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#二、mysql数据库"><span class="toc-number">2.</span> <span class="toc-text">二、mysql数据库</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#mysql字段类型"><span class="toc-number">2.1.</span> <span class="toc-text">mysql字段类型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#字符串"><span class="toc-number">2.1.1.</span> <span class="toc-text">字符串</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#日期时间类型"><span class="toc-number">2.1.2.</span> <span class="toc-text">日期时间类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二进制"><span class="toc-number">2.1.3.</span> <span class="toc-text">二进制</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sql操作"><span class="toc-number">2.2.</span> <span class="toc-text">sql操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#总结："><span class="toc-number">2.2.1.</span> <span class="toc-text">总结：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#增："><span class="toc-number">2.2.1.1.</span> <span class="toc-text">增：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#删："><span class="toc-number">2.2.1.2.</span> <span class="toc-text">删：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#查："><span class="toc-number">2.2.1.3.</span> <span class="toc-text">查：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#改："><span class="toc-number">2.2.1.4.</span> <span class="toc-text">改：</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#参考资料："><span class="toc-number">2.2.1.4.1.</span> <span class="toc-text">参考资料：</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div></div><div class="post-content"><p>数据库学习</p>
+<a id="more"></a>
+<h1 id="一、数据库介绍"><a href="#一、数据库介绍" class="headerlink" title="一、数据库介绍"></a>一、数据库介绍</h1><ul>
+<li>什么是数据库</li>
+<li>什么是关系数据库</li>
+<li>什么是非关系型数据库</li>
+</ul>
+<h2 id="1、什么是数据库？"><a href="#1、什么是数据库？" class="headerlink" title="1、什么是数据库？"></a>1、什么是数据库？</h2><p>数据库这个术语的用法很多，但就从SQL的角度来看，数据库是一个以某种有组织的方式存储的数据集合。最简单的办法是将数据库想象为一个文件柜。<br>这个文件柜是一个存放数据的物理位置，不管数据是什么，也不管数据是如何组织<br>的。</p>
+<h3 id="数据库（database）"><a href="#数据库（database）" class="headerlink" title="数据库（database）"></a>数据库（database）</h3><p>保存有组织的数据的容器（通常是一个文件或一组文件）。</p>
+<ul>
+<li>注意：误用导致混淆</li>
+</ul>
+<p>人们通常用数据库这个术语来代表他们使用的数据库软件，这是不正确的，也因此产生了许多混淆。确切地说，数据库软件应称为数据库管理系统（即<strong>DBMS</strong>）。数据<br>库是通过DBMS创建和操纵的容器，而具体它究竟是什么，形式如何，各种数据库都不一样。</p>
+<ul>
+<li>与普通的“数据仓库”不同的是，数据库依据“数据结构”来组织数据，因为“数据结构”，所以我们看到的数据是比较“条理化”的（比如不会跟以前的普通文件存储式存储成一个文件那么不条理化，我们的数据库分成一个个库，分成一个个表，分成一条条记录，这些记录是多么分明）</li>
+<li>也因为其“数据结构”式，所以有极高的查找速率（比如B-Tree查找法），（由于专精，可以根据自己的结构特性来快速查找，所以对于数据库的查找会比较快捷；不像普通文件系统的“查找”那么通用）</li>
+<li>如果与EXCEL来比的话，能明显的看出数据库的好处，我们能给一个个“字段”添加“约束”（比如约束一列的值不能为空）</li>
+<li>数据库与普通的文件系统的主要区别（起因）：数据库能快速查找对应的数据</li>
+<li>常说的XX数据库，其实实质上是XX数据库管理系统。数据库管理系统是一个软件，是数据库管理的程序实现。</li>
+</ul>
+<h4 id="2、什么是关系型数据库？"><a href="#2、什么是关系型数据库？" class="headerlink" title="2、什么是关系型数据库？"></a>2、什么是关系型数据库？</h4><ul>
+<li>关系型数据库是依据关系模型来创建的数据库。</li>
+<li>所谓关系模型就是“一对一、一对多、多对多”等关系模型，关系模型就是指二维表格模型,因而一个关系型数据库就是由二维表及其之间的联系组成的一个数据组织。</li>
+<li>关系型数据可以很好地存储一些关系模型的数据，比如一个老师对应多个学生的数据（“多对多”），一本书对应多个作者（“一对多”），一本书对应一个出版日期（“一对一”）</li>
+<li>关系模型是我们生活中能经常遇见的模型，存储这类数据一般用关系型数据库</li>
+<li>关系模型包括数据结构（数据存储的问题，二维表）、操作指令集合（SQL语句）、完整性约束(表内数据约束、表与表之间的约束)。</li>
+</ul>
+<p>数据的存储形式：</p>
+<p><img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190805/HC2Qxz62J6.png" alt="image"></p>
+<p>关系的处理形式：</p>
+<p><img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190805/cZaSrNyXeA.png" alt="image"><br>下面是一个E-R图，是多个模型一起用的情况：<br><img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190805/fy8YPJMT7T.png" alt="image"></p>
+<h5 id="常见的关系型数据库："><a href="#常见的关系型数据库：" class="headerlink" title="常见的关系型数据库："></a>常见的关系型数据库：</h5><p>Oracle、DB2、PostgreSQL、Microsoft SQL Server、Microsoft Access、MySQL</p>
+<h5 id="关系型数据库的特点："><a href="#关系型数据库的特点：" class="headerlink" title="关系型数据库的特点："></a>关系型数据库的特点：</h5><h6 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h6><ul>
+<li>1、容易理解：二维表结构是非常贴近逻辑世界一个概念，关系模型相对网状、层次等其他模型来说更容易理解；</li>
+<li>2、使用方便：通用的SQL语言使得操作关系型数据库非常方便；</li>
+<li>3、易于维护：丰富的完整性(实体完整性、参照完整性和用户定义的完整性)大大减低了数据冗余和数据不一致的概率；</li>
+<li>4、支持SQL，可用于复杂的查询。</li>
+</ul>
+<h6 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h6><ul>
+<li>1、为了维护一致性所付出的巨大代价就是其读写性能比较差；</li>
+<li>2、固定的表结构；</li>
+<li>3、高并发读写需求；</li>
+<li>4、海量数据的高效率读写；</li>
+</ul>
+<h4 id="什么是非关系型数据库？"><a href="#什么是非关系型数据库？" class="headerlink" title="什么是非关系型数据库？"></a>什么是非关系型数据库？</h4><p>非关系型数据库主要是基于“非关系模型”的数据库（由于关系型太大，所以一般用“非关系型”来表示其他类型的数据库）</p>
+<p>非关系型模型比如有：</p>
+<ul>
+<li><p>列模型：存储的数据是一列列的。关系型数据库以一行作为一个记录，列模型数据库以一列为一个记录。（这种模型，数据即索引，IO很快，主要是一些分布式数据库）</p>
+<p><img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190805/QwMywwzdKB.png" alt="image"></p>
+</li>
+<li><p>键值对模型：存储的数据是一个个“键值对”，比如name:liming,那么name这个键里面存的值就是liming</p>
+</li>
+</ul>
+<p><img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190805/JKkx756AK4.png" alt="image"></p>
+<ul>
+<li>文档类模型：以一个个文档来存储数据，有点类似“键值对”。</li>
+</ul>
+<h5 id="常见非关系模型数据库："><a href="#常见非关系模型数据库：" class="headerlink" title="常见非关系模型数据库："></a>常见非关系模型数据库：</h5><ul>
+<li>列模型：Hbase</li>
+<li>键值对模型：redis,MemcacheDB</li>
+<li>文档类模型：mongoDB</li>
+</ul>
+<h5 id="非关系型数据库的特点："><a href="#非关系型数据库的特点：" class="headerlink" title="非关系型数据库的特点："></a>非关系型数据库的特点：</h5><h6 id="优点-1"><a href="#优点-1" class="headerlink" title="优点"></a>优点</h6><ul>
+<li>1、无需经过sql层的解析，读写性能很高；</li>
+<li>2、基于键值对，数据没有耦合性，容易扩展；</li>
+<li>3、存储数据的格式：nosql的存储格式是key,value形式、文档形式、图片形式等等，文档形式、图片形式等等，而关系型数据库则只支持基础类型。</li>
+</ul>
+<h6 id="缺点-1"><a href="#缺点-1" class="headerlink" title="缺点"></a>缺点</h6><ul>
+<li>1、不提供sql支持，学习和使用成本较高；</li>
+<li>2、无事务处理，附加功能bi和报表等支持也不好；</li>
+</ul>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p><img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190805/Dd76tTrXRy.png" alt="image"></p>
+<hr>
+<h1 id="二、mysql数据库"><a href="#二、mysql数据库" class="headerlink" title="二、mysql数据库"></a>二、mysql数据库</h1><h2 id="mysql字段类型"><a href="#mysql字段类型" class="headerlink" title="mysql字段类型"></a>mysql字段类型</h2><p>MySQL支持多种类型，大致可以分为三类：数值、日期/时间和字符串(字符)类型。</p>
+<p><img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190809/4HiYJTfJWe.png" alt="1"></p>
+<h3 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h3><p>字符串类型指CHAR、VARCHAR、BINARY、VARBINARY、BLOB、TEXT、ENUM和SET。该节描述了这些类型如何工作以及如何在查询中使用这些类型。</p>
+<p>char和varchar：</p>
+<ul>
+<li>1.char(n) 若存入字符数小于n，则以空格补于其后，查询之时再将空格去掉。所以char类型存储的字符串末尾不能有空格，varchar不限于此。 </li>
+<li>2.char(n) 固定长度，char(4)不管是存入几个字符，都将占用4个字节，varchar是存入的实际字符数+1个字节（n&lt;=255）或2个字节(n&gt;255)，所以varchar(4),存入3个字符将占用4个字节。 </li>
+<li>3.char类型的字符串检索速度要比varchar类型的快。</li>
+</ul>
+<p>varchar和text： </p>
+<ul>
+<li>1.varchar可指定n，text不能指定，内部存储varchar是存入的实际字符数+1个字节（n&lt;=255）或2个字节(n&gt;255)，text是实际字符数+2个字节。 </li>
+<li>2.text类型不能有默认值。 </li>
+<li>3.varchar可直接创建索引，text创建索引要指定前多少个字符。varchar查询速度快于text,在都创建索引的情况下，text的索引似乎不起作用。</li>
+</ul>
+<p><img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190809/yP6RYDTE7J.png" alt="2"></p>
+<h3 id="日期时间类型"><a href="#日期时间类型" class="headerlink" title="日期时间类型"></a>日期时间类型</h3><p>表示时间值的日期和时间类型为DATETIME、DATE、TIMESTAMP、TIME和YEAR。<br><img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190809/cHSTZ3DFaH.png" alt="3"></p>
+<h3 id="二进制"><a href="#二进制" class="headerlink" title="二进制"></a>二进制</h3><ul>
+<li>布尔:bit</li>
+<li>bit 表示1个二进制的位</li>
+<li>bit(8) 表示8个二进制的位</li>
+<li>性别可以定义为0,1, 而不使用male或female字符串</li>
+<li>数据逻辑删除</li>
+<li>某辆车在车库中停放的状态</li>
+<li>所有基于两种状态的数据都可以使用0,1来存储.</li>
+</ul>
+<h2 id="sql操作"><a href="#sql操作" class="headerlink" title="sql操作"></a>sql操作</h2><ol>
+<li>登录数据库 <code>mysql -uroot -p密码;</code></li>
+</ol>
+<p><img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190809/DXAFEnyPmX.png" alt="1"></p>
+<ol start="2">
+<li>查看所有数据库 <code>show databases;</code><br><img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190809/WyBySHMeJx.png" alt="2"></li>
+</ol>
+<p>3.创建stx数据库   <code>create  database(数据库)  stx(库名);</code><br> <img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190809/4cJ57xMkJ4.png" alt="3"></p>
+<p>4.删除stx数据库  <code>drop  database  stx;</code></p>
+<p><img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190809/352QiBb5AT.png" alt="4"></p>
+<p>5.使用stx数据库  <code>use  stx(库名);</code></p>
+<p><img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190809/pcE7Xc72Et.png" alt="image"></p>
+<p>6.创建表<br><code>create创建 + table表格 + student表名 + sid表中的一列+ varchar(10){是sid的数值类型，10表示数量 primary key说明是主键}</code><br>每一列中间用，隔开。<br>分号代表语句的结束，慎用。</p>
+<p><img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190809/pTHyZhxR3c.png" alt="6"><br><code>图片中的creat应改为create</code><br><img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190809/DpRJHEkD5H.png" alt="7"></p>
+<p>7.查看创建的表：<code>desc  表名;</code></p>
+<p>describe可缩写为desc 能识别 </p>
+<p><img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190809/38Bp2JJ55Q.png" alt="8"></p>
+<ol start="8">
+<li>添加主键<br><code>alter table 表名add  primary  key(主键列名);</code></li>
+</ol>
+<p><img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190809/TrFRSd5W64.png" alt="9"></p>
+<p>9.查看库里有哪些表   <code>show tables;</code> 注意tables  有s复数！！</p>
+<p><img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190809/iJCRe6wwRr.png" alt="10"></p>
+<p>10.插入数据往表里 <code>insert into student(sid.....{列名的位置})</code><br>字符型注意单引号<br><img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190809/JxXjsACFjN.png" alt="11"></p>
+<ol start="11">
+<li>查看插入数据后的表   <code>select * from student;</code></li>
+</ol>
+<ul>
+<li><code>select (查看) *(所有列) from(来自) + 表名；</code><br>   <img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190809/42ihaN4GyN.png" alt="12"></li>
+</ul>
+<ul>
+<li><p>查询名字性别信息  <code>select name,sex from student;</code></p>
+<p>  <img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190809/iARtSRAbQJ.png" alt="13"></p>
+</li>
+<li><p>查每一列的女生  where+条件；<br>   <img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190809/4iSGQDAYwG.png" alt="14"></p>
+</li>
+<li><p>查男的所有人<br><img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190809/enBrh325Ei.png" alt="15"></p>
+</li>
+<li><p>查2000以后出生的人<br><img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190809/kTtGACabZP.png" alt="16"></p>
+</li>
+<li><p>多个条件都满足并存用and 连接<br><img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190809/5e2hH5hJse.png" alt="17"></p>
+</li>
+<li><p>随便满足一个条件用or连接   即女的和00后都出现<br><img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190809/pGF3iE6bXm.png" alt="18"> </p>
+</li>
+<li><p>模糊查询   %匹配多个字符   %前后都可以用<br><img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190809/tjS4eaKPDa.png" alt="19"></p>
+</li>
+<li><p>_表示匹配单个字符<br><img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190809/DWeX3wRdp8.png" alt="20"></p>
+</li>
+</ul>
+<ol start="11">
+<li><p>修改表中数据<br><code>update(更新)+表名+set+列名=’改的内容’+where sid=’’;</code><br><img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190809/KXijrPB84j.png" alt="21"></p>
+</li>
+<li><p>删除表中数据<br><img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190809/bsbA4s2ftw.png" alt="22"></p>
+</li>
+</ol>
+<h3 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h3><h4 id="增："><a href="#增：" class="headerlink" title="增："></a>增：</h4><ul>
+<li>1.数据库：create databases 名；</li>
+<li>2．表格：create table 名(列名1 数据类型(大小)，列名2 数据类型)；</li>
+<li>3．信息：放进去东西 所以insert into 表名values(‘列1数据’,’列2数据’);</li>
+</ul>
+<h4 id="删："><a href="#删：" class="headerlink" title="删："></a>删：</h4><ul>
+<li>1.删除库：drop databases 库名；</li>
+<li>2.删除信息：delete {删除哪的？}（来自）from 表名 条件~不然都删了</li>
+</ul>
+<h4 id="查："><a href="#查：" class="headerlink" title="查："></a>查：</h4><ul>
+<li>1.查看有啥数据库：show databases;</li>
+<li>2.查看表结构：desc 表名；</li>
+<li>3.select *(所有列){查哪？}from 表名  有条件where没有结束；</li>
+</ul>
+<ul>
+<li>必须都满足的条件用and连接；</li>
+<li>满足一个条件就行用or 连接；<h4 id="改："><a href="#改：" class="headerlink" title="改："></a>改：</h4></li>
+<li>update (哪个表?)+表名 set（建立）要改的比如name=’  ’</li>
+<li>有条件where没有条件结束（所有数据的名字改变）。</li>
+</ul>
+<h5 id="参考资料："><a href="#参考资料：" class="headerlink" title="参考资料："></a>参考资料：</h5><p><a href="https://www.cnblogs.com/progor/p/8729798.html" target="_blank" rel="noopener">数据库基础介绍</a></p>
+<p><a href="https://www.cnblogs.com/wuyepeng/p/9744393.html" target="_blank" rel="noopener">关系型数据库和非关系型数据库的区别</a></p>
+<p><a href="https://www.cnblogs.com/kliine/p/10018607.html" target="_blank" rel="noopener">ORACLE数据库字段类型说明</a></p>
+<p><a href="https://www.cnblogs.com/jennyyin/p/7895010.html" target="_blank" rel="noopener">MySQL字段类型</a></p>
+<p><a href="https://gitee.com/daylight_blog/safety_learning/tree/master/%E4%BA%8C%E3%80%81%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AD%A6%E4%B9%A0" target="_blank" rel="noopener">SQL必知必会（第4版）.pdf</a></p>
+</div><div class="tags"><a href="/tags/安全/">安全</a></div><div class="post-nav"><a class="pre" href="/2019/08/01/一、VirtualBos下centos + nginx + php-fpm +mysql环境搭建/">一、centos + nginx + php-fpm + mysql环境搭建</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"><input type="hidden" name="sitesearch" value="http://yoursite.com"></form></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/信安之路/">信安之路</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/读书/">读书</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"><a href="/tags/博客搭建/" style="font-size: 15px;">博客搭建</a> <a href="/tags/安全/" style="font-size: 15px;">安全</a> <a href="/tags/随笔/" style="font-size: 15px;">随笔</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2019/08/07/github+HEXO搭建自己的博客/">github+HEXO搭建自己的博客</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/08/07/博客引用外链图片无法显示问题/">博客引用外链图片无法显示问题</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/08/05/喜欢的句子/">喜欢的句子~</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/08/01/一、VirtualBos下centos + nginx + php-fpm +mysql环境搭建/">一、centos + nginx + php-fpm + mysql环境搭建</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/08/10/二、认识数据库并学习MYSQL的基础操作/">二、认识数据库并学习MYSQL的基础操作</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> 友情链接</i></div><ul></ul><a target="_blank"></a><ul></ul><a target="_blank"></a><ul></ul><a target="_blank"></a></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2019 <a href="/." rel="nofollow">人间且慢行.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css"><script type="text/javascript" color="0,0,0" opacity="0.5" zindex="-2" count="50" src="//lib.baomitu.com/canvas-nest.js/2.0.4/canvas-nest.umd.js"></script><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>
