@@ -1,0 +1,211 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description"><title> | 人间且慢行</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/normalize/8.0.1/normalize.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/1.0.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/1.0.0/grids-responsive-min.css"><link rel="stylesheet" href="//lib.baomitu.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//lib.baomitu.com/jquery/3.4.0/jquery.min.js"></script><link rel="icon" mask sizes="any" href="/favicon.ico"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><meta name="referrer" content="no-referrer-when-downgrade"><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">人间且慢行</h1><a id="logo" href="/.">人间且慢行</a><p class="description"></p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title"></h1><div class="post-meta">Aug 14, 2019<script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script><span id="busuanzi_container_page_pv"> | <span id="busuanzi_value_page_pv"></span><span> 阅读</span></span></div><div class="post-content"><p>title: 数据库原理知识梳理<br>date: 2019.8.14</p>
+<p>tags: 安全</p>
+<p>categories: 基础<br>toc: true<br>description: 转载</p>
+<h1 id="数据库原理知识梳理"><a href="#数据库原理知识梳理" class="headerlink" title="数据库原理知识梳理"></a>数据库原理知识梳理</h1><p>转载：知乎</p>
+<p><a href="https://www.zhihu.com/people/DarkBluecenter" target="_blank" rel="noopener">晒月亮的孩子</a></p>
+<h2 id="一、DBS系统构成"><a href="#一、DBS系统构成" class="headerlink" title="一、DBS系统构成"></a>一、DBS系统构成</h2><h3 id="1、DB的概念与特点："><a href="#1、DB的概念与特点：" class="headerlink" title="1、DB的概念与特点："></a>1、DB的概念与特点：</h3><ul>
+<li>数据库（DB）是存储在计算机系统内的有结构的数据集合，是相关数据的集合，数据由数据库管理系统统一管理和维护。</li>
+<li>数据（Data）指的是可观察的客观事实，并且有隐含的含义。</li>
+<li>在数据库中，数据与数据的含义（数据名称及说明）同时存储。</li>
+<li>数据的最小存取单位是构成记录的、有名称的、有含义的最小数据单位——数据项。</li>
+<li>定义数据库时，必须定义数据项的逻辑结构。</li>
+<li>在使用数据库时，以数据项名存储数据、更新数据以及查询和使用数据。</li>
+<li>在数据库中，不仅包含数据本身，还包含了数据结构和约束的完整性定义或者描述。这些定义存储在DBMS的目录中，称为数据库的<strong>元数据</strong>或者<strong>数据字典</strong>。</li>
+<li>任何合法用户都可以在元数据的帮助下，利用数据项名方面的访问数据库中的数据以及他们的逻辑定义，并使用这些数据，亦即数据可高度共享。</li>
+<li>数据库是存储在计算机系统内的有结构的数据的集合，数据是由数据库管理系统管理的。</li>
+</ul>
+<h3 id="2、DBS特点与组成要素："><a href="#2、DBS特点与组成要素：" class="headerlink" title="2、DBS特点与组成要素："></a>2、DBS特点与组成要素：</h3><ul>
+<li><p>DBS是指在计算机系统中引入数据库后的数据构成，由计算机硬件、操作系统、DBMS、DB、应用程序和用户以及数据库开发和管理人员等组成。</p>
+</li>
+<li><p>数据库系统区别于传统文件处理系统的最重要特征是引入了数据库这个概念，以及产生数据库管理系统。</p>
+</li>
+<li><p>与文件系统相比，DBS有如下四个主要特点：</p>
+</li>
+<li><ul>
+<li><strong>整体数据结构化</strong>：数据库中的任何数据都是公开的，不属于任何应用，结构是全面的。</li>
+<li><strong>数据的共享度高</strong>：在显示数据的同时可以显示数据的逻辑结构；整个组织的整体数据被综合考虑，整体数据结构化。可以方便的使用数据和扩充新的应用。</li>
+<li><strong>数据的独立性高</strong>：数据与数据的结构存储在数据库中，应用程序既不存储数据也不存储数据的逻辑结构。数据与程序相对独立。</li>
+<li><strong>高度的数据控制能力</strong>：具有较高的数据安全性；较好的数据完整性；较强的并发控制能力；较强的数据恢复能力。</li>
+</ul>
+</li>
+</ul>
+<h3 id="3、DBMS的功能："><a href="#3、DBMS的功能：" class="headerlink" title="3、DBMS的功能："></a>3、DBMS的功能：</h3><ul>
+<li><p>数据库管理系统是专门用来实现和维护数据库而建立的通用软件。</p>
+</li>
+<li><p>DBMS是操作系统支持下工作的数据管理软件，是支持用户创建和维护数据库的一组程序包。对内负责管理数据库，对外向用户提供一整套命令。用户可以通过命令来创建数据库，定义数据，对数据库中的数据进行各种合法的操作。</p>
+</li>
+<li><p>DBMS有如下六种基本功能：</p>
+</li>
+<li><ul>
+<li><strong>数据定义</strong>：用户可以利用数据定义语言（DDL）来方便地定义数据库中数据的逻辑结构。</li>
+<li><strong>数据操纵</strong>：用户可以利用数据操纵语言（DML）来实现对数据库对数据库中数据的插入、查找、修改或者删除操作。</li>
+<li><strong>完整性约束检查</strong>：检查数据时候符合一定的规定。</li>
+<li><strong>访问控制</strong>：通过数据控制语言（DCL）来实现对不同级别用户的访问控制功能。</li>
+<li><strong>并发控制</strong>：通过只用并发控制功能，可以确保试图更新同一数据的多个用户能够以一种受控的方式完成各自的工作，即避免并发操作时可能带来的数据不一致性。</li>
+<li><strong>数据恢复</strong>：恢复数据库。</li>
+</ul>
+</li>
+</ul>
+<h3 id="4、DBA的职责"><a href="#4、DBA的职责" class="headerlink" title="4、DBA的职责"></a>4、DBA的职责</h3><ul>
+<li><p>数据库管理员的主要职责有：</p>
+</li>
+<li><ul>
+<li>在用户与数据库开发人员之间进行沟通和协调。</li>
+<li>参与数据库设计工作。</li>
+<li>决定数据的完整性约束和不同用户的存取权限。</li>
+<li>保证数据库的正常运行，进行数据库的维护工作。</li>
+<li>提出数据库的重构计划。</li>
+</ul>
+</li>
+</ul>
+<h2 id="二、DB的三级模式与关系数据模型的实例"><a href="#二、DB的三级模式与关系数据模型的实例" class="headerlink" title="二、DB的三级模式与关系数据模型的实例"></a>二、DB的三级模式与关系数据模型的实例</h2><ul>
+<li>数据的三级模式结构包括外模式、模式和内模式。</li>
+</ul>
+<p><img src="https://pic2.zhimg.com/80/v2-5a996779426e404566b1da36d2d16259_hd.jpg" alt="img"></p>
+<ul>
+<li><strong>模式</strong>：也成逻辑模式，是数据库中全体数据在逻辑上的视图。逻辑结构包括数据记录的名称，数据项的名称、类型、域值。通过模式DDL来进行模式的定义。</li>
+<li>数据库中存储的是数据及数据之间的联系。</li>
+<li><strong>Transaction</strong>：事务</li>
+<li>数据库是在计算机系统中按照一定的数据模型组织、存储和应用的数据的集合。</li>
+<li><strong>关系数据操作语言（DML）的特点是</strong>：操作对象与结果均是 关系、操作的非过程性强 、语言一体化，并且是建立在数学理论的基础上的。</li>
+</ul>
+<h2 id="三、SQL语言的特点"><a href="#三、SQL语言的特点" class="headerlink" title="三、SQL语言的特点"></a>三、SQL语言的特点</h2><ol>
+<li>一体化</li>
+<li>面向集合的操作方式。</li>
+<li>高度非过程化</li>
+<li>两种使用方式，统一的语法结构。</li>
+<li>语言简洁，易学易用。</li>
+</ol>
+<h2 id="四、视图的定义"><a href="#四、视图的定义" class="headerlink" title="四、视图的定义"></a>四、视图的定义</h2><p>视图是从一个或多个关系（基本表或已存在的视图）导出的关系。是数据库系统的一个重要机制。</p>
+<h2 id="五、视图与基本表的区别与联系"><a href="#五、视图与基本表的区别与联系" class="headerlink" title="五、视图与基本表的区别与联系"></a>五、视图与基本表的区别与联系</h2><ol>
+<li>视图是虚表，在一般情况下不建立索引。</li>
+<li>sql一般也不提供修改视图定义的语句。</li>
+<li>对视图中数据进行更新是有限制的。</li>
+</ol>
+<h2 id="六、数据模型的三要素"><a href="#六、数据模型的三要素" class="headerlink" title="六、数据模型的三要素"></a>六、数据模型的三要素</h2><ol>
+<li>数据结构</li>
+<li>数据操作</li>
+<li>完整性约束</li>
+</ol>
+<h2 id="七、事务"><a href="#七、事务" class="headerlink" title="七、事务"></a>七、事务</h2><ul>
+<li>事务是数据库操作的最小逻辑工作单元，是一系列SQL操作的集合。</li>
+<li>事务必须具有的四个性质(ACID特性)是：原子性、一致性、隔离性和持久性。</li>
+<li>提交(commit transaction)：使事务成功地结束。所执行事务对数据库的所有更新将永远存在。</li>
+<li>回滚(rollback transaction)：即在事务的运行过程中发生了某种故障，事务不能继续运行，影响该事务的SQL语句所造成的任何改变必须全部作废，回滚到事务开始前的状态。</li>
+</ul>
+<h2 id="八、并发操作的三类问题"><a href="#八、并发操作的三类问题" class="headerlink" title="八、并发操作的三类问题"></a>八、并发操作的三类问题</h2><ol>
+<li>丢失更新：写写冲突，加排它锁X</li>
+<li>读“脏”数据：写读冲突，加共享锁S</li>
+<li>不可重复读：读写冲突</li>
+</ol>
+<h2 id="九、数据库系统的基本特点"><a href="#九、数据库系统的基本特点" class="headerlink" title="九、数据库系统的基本特点"></a>九、数据库系统的基本特点</h2><ol>
+<li>整体数据结构化</li>
+<li>数据的共享度高</li>
+<li>数据的独立性高</li>
+<li>高度的数据控制能力。</li>
+</ol>
+<h2 id="十、数据库的基本特点"><a href="#十、数据库的基本特点" class="headerlink" title="十、数据库的基本特点"></a>十、数据库的基本特点</h2><ol>
+<li>数据可以共享</li>
+<li>数据独立性</li>
+<li>数据冗余小，易扩充</li>
+<li>统一管理和控制。</li>
+</ol>
+<h2 id="十一、自然连接与等值连接的区别"><a href="#十一、自然连接与等值连接的区别" class="headerlink" title="十一、自然连接与等值连接的区别"></a>十一、自然连接与等值连接的区别</h2><ol>
+<li>自然连接要求相等的分量必须有共同的属性；等值连接就不需要。</li>
+<li>自然连接要求把结果中的所有重复属性名都去掉一个；等值连接却不这样。</li>
+</ol>
+<h2 id="十二、SQL语言分类"><a href="#十二、SQL语言分类" class="headerlink" title="十二、SQL语言分类"></a>十二、SQL语言分类</h2><ol>
+<li>DDL数据定义语言：负责创建、修改、删除表、索引和视图等对象，由动词 create, alter, drop 组成。</li>
+<li>DML数据操作语言：负责数据库中数据的插入、修改、查询和删除操作，由动词 insert, update, select, delete 组成。</li>
+<li>DCL数据控制语言：用来授予和撤销用户对数据的操作权限，由动词 grant, revoke 组成。</li>
+</ol>
+<h2 id="十三、SQL数据类型"><a href="#十三、SQL数据类型" class="headerlink" title="十三、SQL数据类型"></a>十三、SQL数据类型</h2><ul>
+<li>int/integer：全字长整数型</li>
+<li>smallint：半字长整数型</li>
+<li>decimal(p[,q])：精确数值型，共p位，小数点后有q位。</li>
+<li>float：双字长浮点数</li>
+<li>char(n)：长度为n的定长字符串</li>
+<li>varchar(n)：最大长度为n的变长字符串。</li>
+<li>datetime：日期时间型，格式可以设置</li>
+</ul>
+<h2 id="十四、数据完整性约束"><a href="#十四、数据完整性约束" class="headerlink" title="十四、数据完整性约束"></a>十四、数据完整性约束</h2><ul>
+<li>not null：不为空</li>
+<li>null：可以为空</li>
+<li>unique：不能有相同的值</li>
+</ul>
+<h2 id="十五、集函数"><a href="#十五、集函数" class="headerlink" title="十五、集函数"></a>十五、集函数</h2><ul>
+<li>count(distinct/all *)：统计结果中元组个数</li>
+<li>count(distinct/all&lt;列名&gt;)：统计结果中某列值的个数</li>
+<li>max(&lt;列名&gt;)：给出一列上的最大值</li>
+<li>min(&lt;列名&gt;)：给出一列上的最小值</li>
+<li>sum(distinct/all&lt;列名&gt;)：给出一列上值的总和</li>
+<li>avg(distinct/all&lt;列名&gt;)：给出一列上值的平均</li>
+</ul>
+<h2 id="十六、特殊运算符"><a href="#十六、特殊运算符" class="headerlink" title="十六、特殊运算符"></a>十六、特殊运算符</h2><p><img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190813/wDDsdsdaBn.png" alt="img"></p>
+<h2 id="十七、查询方式"><a href="#十七、查询方式" class="headerlink" title="十七、查询方式"></a>十七、查询方式</h2><h3 id="1、分组查询"><a href="#1、分组查询" class="headerlink" title="1、分组查询"></a>1、分组查询</h3><ul>
+<li>where子句作用于基表或者视图，从中选择满足条件的元组；having子句作用于分组后的组，从中选择满足条件的组。</li>
+</ul>
+<h3 id="2、排序查询"><a href="#2、排序查询" class="headerlink" title="2、排序查询"></a>2、排序查询</h3><ul>
+<li>用 order by 进行默认升序排序</li>
+<li>在列名后面添加 desc 进行降序排序</li>
+</ul>
+<h3 id="3、多关系连接查询"><a href="#3、多关系连接查询" class="headerlink" title="3、多关系连接查询"></a>3、多关系连接查询</h3><figure class="highlight q"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1.</span> 交叉连接： <span class="built_in">cross</span> join ，两表之间没有任何联系</span><br><span class="line"><span class="keyword">select</span>[<span class="built_in">distinct</span>/<span class="built_in">all</span>]&lt;目标列清单&gt;<span class="keyword">from</span>&lt;关系名[别名]清单&gt;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight pf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2</span>.内部连接： inner join ，两表之间具有共同性质的属性。</span><br><span class="line">select[distinct/<span class="literal">all</span>]<span class="variable">&lt;目标清单&gt;</span><span class="keyword">from</span><span class="variable">&lt;关系名1&gt;</span>innerjoin<span class="variable">&lt;关系名2&gt;</span><span class="keyword">on</span><span class="variable">&lt;连接条件&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>3.外连接： outer join</p>
+<p>4.自身连接： self join</p>
+<h3 id="4、嵌套查询"><a href="#4、嵌套查询" class="headerlink" title="4、嵌套查询"></a>4、嵌套查询</h3><ul>
+<li>如果子查询的返回结果总是单个值，那么可以用“=”来代替“in”。</li>
+<li>在嵌套查询中可以使用比较运算符来构成它的连接词。如 &lt; , &gt; , = , &lt;= , &gt;= , &lt;&gt;</li>
+<li>在比较运算符的后面可以加上 any 后者 all ， any 只需其中的一个即可， all 表示必须全部满足。</li>
+<li>在使用嵌套语句时也可以结合 between…and…</li>
+</ul>
+<h2 id="十八、select语句的集合操作"><a href="#十八、select语句的集合操作" class="headerlink" title="十八、select语句的集合操作"></a>十八、select语句的集合操作</h2><ul>
+<li>集合操作主要包括并（union），交（intersect），差（except/minus）</li>
+<li>select默认保留重复的元素，除非使用 distinct 进行指明。但是select语句的集合操作，在默认情况是消除重复元组的，要想保留，需要在集合操作的关键字后面加上 all。</li>
+</ul>
+<h2 id="十九、视图操作"><a href="#十九、视图操作" class="headerlink" title="十九、视图操作"></a>十九、视图操作</h2><h3 id="1、定义视图"><a href="#1、定义视图" class="headerlink" title="1、定义视图"></a>1、定义视图</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">createview<span class="tag">&lt;<span class="name">视图名</span>&gt;</span></span><br><span class="line"></span><br><span class="line">as<span class="tag">&lt;<span class="name">子查询</span>&gt;</span></span><br><span class="line"></span><br><span class="line">[withcheckoption]</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>若有 with check option ，则今后在对此视图，进行 insert, update, delete 操作时，会自动检查是否符合原定义视图子查询中的&lt;条件表达式&gt;。</li>
+<li>视图是数据库中数据的物理独立性和逻辑独立性的重要支柱。</li>
+</ul>
+<h3 id="2、删除视图"><a href="#2、删除视图" class="headerlink" title="2、删除视图"></a>2、删除视图</h3><p><code>drop view</code></p>
+<h2 id="二十、参照完整性约束的实现策略"><a href="#二十、参照完整性约束的实现策略" class="headerlink" title="二十、参照完整性约束的实现策略"></a>二十、参照完整性约束的实现策略</h2><ol>
+<li>限制策略： no action</li>
+<li>级联策略： cascade</li>
+<li>置空策略</li>
+</ol>
+<h2 id="二十一、完整性约束"><a href="#二十一、完整性约束" class="headerlink" title="二十一、完整性约束"></a>二十一、完整性约束</h2><ol>
+<li>实体完整性：通过主码定义来完成</li>
+<li>参照完整性：外部码约束references 和参照完整性约束</li>
+<li>用户自定义完整性：基于属性和元组的check约束</li>
+</ol>
+<h2 id="二十二、触发器的基本概念"><a href="#二十二、触发器的基本概念" class="headerlink" title="二十二、触发器的基本概念"></a>二十二、触发器的基本概念</h2><ul>
+<li>触发器，就是一类由数据库操作实践（插入、删除、修改）驱动的特殊过程，一旦由某个用户定义，任何用户对该触发器指定的数据进行增、删或改操作时，系统将会自动激活相应的触发动作，在数据库服务器上进行集中的完整性控制。</li>
+<li>tigger</li>
+</ul>
+<h2 id="二十三、访问控制"><a href="#二十三、访问控制" class="headerlink" title="二十三、访问控制"></a>二十三、访问控制</h2><ul>
+<li>授予权限 grant</li>
+<li>收回权限 revoke</li>
+</ul>
+<h2 id="二十四、规范化"><a href="#二十四、规范化" class="headerlink" title="二十四、规范化"></a>二十四、规范化</h2><p>1、未规范化的数据存在的问题</p>
+<ul>
+<li>数据冗余度大，主要由于属性之间的约束关系太强导致。</li>
+<li>修改异常。</li>
+<li>插入与删除异常。</li>
+</ul>
+<p>2、规范化后的数据的好处</p>
+<ul>
+<li><p>数据量减少</p>
+</li>
+<li><p>表达能力增强</p>
+</li>
+<li><p>修改方便</p>
+<figure class="highlight oxygene"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">找出所有没有选修<span class="number">1</span>号课程的学生姓名；</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> sname</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> student</span><br><span class="line"></span><br><span class="line"><span class="keyword">where</span> sno <span class="keyword">not</span> <span class="keyword">in</span>  				  <span class="comment">//等同于</span></span><br><span class="line"></span><br><span class="line">(<span class="keyword">select</span> sno </span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> grade <span class="keyword">where</span> cno=<span class="string">'1'</span>)</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>原文：<a href="https://zhuanlan.zhihu.com/p/37435149" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/37435149</a></p>
+</div><div class="tags"></div><div class="post-nav"><a class="next" href="/2019/08/14/三、第三周-数据库系统表相关学习/"></a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"><input type="hidden" name="sitesearch" value="http://yoursite.com"></form></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/信安之路/">信安之路</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/基础知识/">基础知识</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/读书/">读书</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"><a href="/tags/博客搭建/" style="font-size: 15px;">博客搭建</a> <a href="/tags/安全/" style="font-size: 15px;">安全</a> <a href="/tags/随笔/" style="font-size: 15px;">随笔</a> <a href="/tags/数据结构/" style="font-size: 15px;">数据结构</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2019/08/14/数据库原理知识梳理/">数据库原理知识梳理</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/08/14/三、第三周-数据库系统表相关学习/">三、第三周-数据库系统表相关学习</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/08/11/树以及二分搜索树/">树以及二分搜索树学习</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/08/10/二、认识数据库并学习MYSQL的基础操作/">二、认识数据库并学习MYSQL的基础操作</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/08/07/github+HEXO搭建自己的博客/">github+HEXO搭建自己的博客</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/08/07/博客引用外链图片无法显示问题/">博客引用外链图片无法显示问题</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/08/05/喜欢的句子/">喜欢的句子~</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/08/01/一、VirtualBos下centos + nginx + php-fpm +mysql环境搭建/">一、centos + nginx + php-fpm + mysql环境搭建</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> 友情链接</i></div><ul></ul><a target="_blank"></a><ul></ul><a target="_blank"></a><ul></ul><a target="_blank"></a></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2019 <a href="/." rel="nofollow">人间且慢行.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css"><script type="text/javascript" color="0,0,0" opacity="0.5" zindex="-2" count="50" src="//lib.baomitu.com/canvas-nest.js/2.0.4/canvas-nest.umd.js"></script><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>
