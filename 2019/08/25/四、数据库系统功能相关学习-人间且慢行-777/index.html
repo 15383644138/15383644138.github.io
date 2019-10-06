@@ -1,0 +1,201 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description"><title>四、数据库系统功能相关学习 | 人间且慢行</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/normalize/8.0.1/normalize.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/1.0.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/1.0.0/grids-responsive-min.css"><link rel="stylesheet" href="//lib.baomitu.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//lib.baomitu.com/jquery/3.4.0/jquery.min.js"></script><link rel="icon" mask sizes="any" href="/favicon.ico"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><meta name="referrer" content="no-referrer-when-downgrade"><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">四、数据库系统功能相关学习</h1><a id="logo" href="/.">人间且慢行</a><p class="description"></p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">四、数据库系统功能相关学习</h1><div class="post-meta">Aug 25, 2019<span> | </span><span class="category"><a href="/categories/信安之路/">信安之路</a></span><script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script><span id="busuanzi_container_page_pv"> | <span id="busuanzi_value_page_pv"></span><span> 阅读</span></span></div><div class="clear"><div class="toc-article" id="toc"><div class="toc-title">文章目录</div><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#0x00任务名称：数据库系统功能相关学习"><span class="toc-number">1.</span> <span class="toc-text">0x00任务名称：数据库系统功能相关学习</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x01系统函数"><span class="toc-number">2.</span> <span class="toc-text">0x01系统函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#常用注入函数"><span class="toc-number">2.1.</span> <span class="toc-text">常用注入函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#字符串函数"><span class="toc-number">2.2.</span> <span class="toc-text">字符串函数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#length、char-length操作"><span class="toc-number">2.2.1.</span> <span class="toc-text">length、char_length操作</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#reverse、concat、concat-ws"><span class="toc-number">2.2.2.</span> <span class="toc-text">reverse、concat、concat_ws</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#instr、substr的去广告案例"><span class="toc-number">2.2.3.</span> <span class="toc-text">instr、substr的去广告案例:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#replace去广告案例：-更合适"><span class="toc-number">2.2.4.</span> <span class="toc-text">replace去广告案例：(更合适)</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#转换函数"><span class="toc-number">2.3.</span> <span class="toc-text">转换函数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#其他系列"><span class="toc-number">2.3.1.</span> <span class="toc-text">其他系列</span></a></li></ol></li></ol></li></ol></div></div><div class="post-content"><h2 id="0x00任务名称：数据库系统功能相关学习"><a href="#0x00任务名称：数据库系统功能相关学习" class="headerlink" title="0x00任务名称：数据库系统功能相关学习"></a>0x00任务名称：数据库系统功能相关学习</h2><ul>
+<li><p>1、学习数据库自带函数的功能与用法（思考在什么情況下可以执行命令）</p>
+</li>
+<li><p>2、将所有涉及的函数进行测试并举例说明其用法</p>
+<p>扩展学习:针对自己所选数据库，尝试执行系统命令，自己构造所需环境</p>
+</li>
+</ul>
+<p>具体解释：<br>在sql注入时为了应对各种限制措施，利用 数据库自带的一些系统函数经过各种变换之后可以绕过一些安全设备或者一些基础防御的措施，比如一些字符串转换的函数、截取字符串长度的函数等，参考学习</p>
+<p><a href="https://www.runoob.com/mysql/mysql-install.html" target="_blank" rel="noopener">MYSQL函数菜鸟教程</a></p>
+<p><strong>应用的场景</strong>:通过注入获取数据、变换字符串绕过WAF、盲注猜解字符数据等我们经常在注入时候想要利用数据库来执行系统命令，不同的数据库可能使用不不同的方式，比如 Mysql的udf、 Mssql的Xp_ cmdshell等，这个在利用注入提权的时候非常有帮助，通过数据库执行系统命令所拥有的权限跟数据库的安装过程是有关系的，所以搞清楚这个关系也很重要，这样我们在安装配置数据库的时候可以尽量避免权限过高，造成安全隐患。</p>
+<hr>
+<h2 id="0x01系统函数"><a href="#0x01系统函数" class="headerlink" title="0x01系统函数"></a>0x01系统函数</h2><h3 id="常用注入函数"><a href="#常用注入函数" class="headerlink" title="常用注入函数"></a>常用注入函数</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">SYSTEM_USER</span>();<span class="comment">#系统用户名</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">USER</span>();<span class="comment">#用户名</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="keyword">CURRENT_USER</span>();<span class="comment">#当前用户名</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="keyword">SESSION_USER</span>();<span class="comment">#链接数据库的用户名</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="keyword">DATABASE</span>();<span class="comment">#数据库名</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="keyword">VERSION</span>();<span class="comment">#数据库版本</span></span><br><span class="line"><span class="keyword">select</span> @@datadir;<span class="comment">#数据库路径</span></span><br><span class="line"><span class="keyword">SELECT</span> @@basedir;<span class="comment">#数据库安装路径</span></span><br><span class="line"><span class="keyword">SELECT</span> @@version_compile_os;<span class="comment">#操作系统</span></span><br><span class="line"><span class="comment">#count();返回执行结果数量</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="keyword">COUNT</span>(<span class="keyword">User</span>) <span class="keyword">from</span> mysql.user;</span><br></pre></td></tr></table></figure>
+
+<h3 id="字符串函数"><a href="#字符串函数" class="headerlink" title="字符串函数"></a>字符串函数</h3><table>
+<thead>
+<tr>
+<th>函数名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>lower(str)</td>
+<td>把字符串转换为小写</td>
+</tr>
+<tr>
+<td>upper(str)</td>
+<td>把字符串转换为大写</td>
+</tr>
+<tr>
+<td>ltrim(str)</td>
+<td>去除字符串左边空格</td>
+</tr>
+<tr>
+<td>rtrim(str)</td>
+<td>去除字符串右边空格</td>
+</tr>
+<tr>
+<td>trim([remove_str from ]str)</td>
+<td>去除字符串两端空格或指定字符</td>
+</tr>
+<tr>
+<td>reverse(str)</td>
+<td>反转字符串</td>
+</tr>
+<tr>
+<td>length(str)</td>
+<td>返回字符串的存储长度</td>
+</tr>
+<tr>
+<td>char_length(str)</td>
+<td>返回字符串的字符个数</td>
+</tr>
+<tr>
+<td>instr(str,substr)</td>
+<td>返回substr第一次出现的位置</td>
+</tr>
+<tr>
+<td>left(str,n)</td>
+<td>返回字符串前n个字符</td>
+</tr>
+<tr>
+<td>right(str,n)</td>
+<td>返回字符串后n个字符</td>
+</tr>
+<tr>
+<td>mid(str,pos[,len])</td>
+<td>截取从pos位置开始到len长度的字符串</td>
+</tr>
+<tr>
+<td>substring(str,pos[,len])</td>
+<td>截取从pos位置开始到len长度的字符串</td>
+</tr>
+<tr>
+<td>replace(str,old_str,new_str])</td>
+<td>用new_str替换str中的old_str</td>
+</tr>
+<tr>
+<td>concat(str1,str2…)</td>
+<td>将多个字符串合并为一个字符串</td>
+</tr>
+<tr>
+<td>concat_ws(split_str,str1,str2…)</td>
+<td>以指定字符拼接多个字符串</td>
+</tr>
+<tr>
+<td>group_concat(column)</td>
+<td>把分组中的值拼接成一个字符串</td>
+</tr>
+<tr>
+<td>floor()</td>
+<td>返回小于或等于x的最大整数</td>
+</tr>
+<tr>
+<td>rand()</td>
+<td>返回0和1之间的一个随机数</td>
+</tr>
+<tr>
+<td>#### lower、upper、ltrim、rtrim、trim案例：</td>
+<td></td>
+</tr>
+<tr>
+<td><img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190827/S37Yw83fpG.png" alt="image"></td>
+<td></td>
+</tr>
+</tbody></table>
+<p><img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190827/ydQwft8yec.png" alt="image"></p>
+<p><img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190827/G84fpM5nKp.png" alt="image"></p>
+<p><img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190827/e6jYJn56cH.png" alt="image"></p>
+<p><img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190827/QSKCMWWtSF.png" alt="image"></p>
+<p><img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190827/8n43EQHWiY.png" alt="image"></p>
+<h4 id="length、char-length操作"><a href="#length、char-length操作" class="headerlink" title="length、char_length操作"></a>length、char_length操作</h4><p><img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190830/wkdDmiXyZ2.png" alt></p>
+<h4 id="reverse、concat、concat-ws"><a href="#reverse、concat、concat-ws" class="headerlink" title="reverse、concat、concat_ws"></a>reverse、concat、concat_ws</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#反转字符串 instr(str,substr)</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">reverse</span>(<span class="string">'好好学习'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">#将多个字符串合并为一个字符串</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">concat</span>（<span class="string">'aa'</span>,<span class="string">','</span>,<span class="string">'bb'</span>,<span class="string">','</span>,<span class="string">'cc'</span>）;</span><br><span class="line"><span class="keyword">select</span> <span class="keyword">concat</span>(<span class="string">'aa'</span>,<span class="string">','</span>,<span class="literal">null</span>,<span class="string">','</span>,<span class="string">'cc'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">#以指定字符拼接多个字符串</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">concat_ws</span>(<span class="string">','</span>,<span class="string">'aa'</span>,<span class="string">'bb'</span>,<span class="string">'cc'</span>);</span><br><span class="line"><span class="keyword">select</span> <span class="keyword">concat_ws</span>(<span class="string">','</span>,<span class="string">'aa'</span>,<span class="literal">null</span>,<span class="string">'cc'</span>);</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190830/w2mjWsCDms.png" alt></p>
+<h4 id="instr、substr的去广告案例"><a href="#instr、substr的去广告案例" class="headerlink" title="instr、substr的去广告案例:"></a>instr、substr的去广告案例:</h4><p><code>PS：substring  等同于  substr  以及  mid，它只是为了兼容其他数据库</code></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#返回substr第一次出现的位置</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">instr</span>(<span class="string">'在一个月黑风abc广告高的夜晚...'</span>,<span class="string">'abc广告'</span>)；</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">char_length</span>(<span class="string">'abc广告'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">concat</span>(<span class="keyword">substr</span>(<span class="string">'在一个月黑风abc广告高的夜晚...'</span>,<span class="number">1</span>,<span class="number">7</span><span class="number">-1</span>),<span class="keyword">substr</span>(<span class="string">'在一个月黑风abc广告高的夜晚...'</span>,<span class="number">7</span>+<span class="number">5</span>)) <span class="keyword">as</span> new_str;</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190830/MfpyMzCfyb.png" alt></p>
+<h4 id="replace去广告案例：-更合适"><a href="#replace去广告案例：-更合适" class="headerlink" title="replace去广告案例：(更合适)"></a>replace去广告案例：(更合适)</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># replace(str,old_str,new_str]) 用new_str替换str中的old_str</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">replace</span>(<span class="string">'在一个月黑风abc广告高的夜晚...'</span>,<span class="string">'abc广告'</span>,<span class="string">''</span>);</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190830/ifaaF5k8ia.png" alt></p>
+<h3 id="转换函数"><a href="#转换函数" class="headerlink" title="转换函数"></a>转换函数</h3><table>
+<thead>
+<tr>
+<th>函数名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>hex(str)</td>
+<td>把字符串转换为16进制</td>
+</tr>
+<tr>
+<td>to_base64(obj)</td>
+<td>编码为base64字符串</td>
+</tr>
+<tr>
+<td>from_base64(base64_str)</td>
+<td>解码base64格式的字符串</td>
+</tr>
+<tr>
+<td>unhex(16str)</td>
+<td>把16进制转换为字符串</td>
+</tr>
+<tr>
+<td>ord(str)</td>
+<td>返回最左边字符的ascii码</td>
+</tr>
+<tr>
+<td>ascii(char)</td>
+<td>返回字符串str的最左侧字符的数值</td>
+</tr>
+<tr>
+<td>char(ascii_num)</td>
+<td>把ascii码数值转换为对应的字符</td>
+</tr>
+<tr>
+<td>convert(expr,type)</td>
+<td>把表达式转换为指定类型type</td>
+</tr>
+</tbody></table>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># hex(str)	把字符串转换为16进制</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">hex</span>(<span class="string">','</span>);</span><br><span class="line"><span class="comment"># unhex(16str)	把16进制转换为字符串</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">unhex</span>(<span class="string">'2C'</span>);</span><br><span class="line"><span class="comment"># ascii(char)	返回字符串str的最左侧字符的数值</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">ascii</span>(<span class="string">'e'</span>),<span class="keyword">ascii</span>(<span class="string">'t'</span>),<span class="keyword">ascii</span>(<span class="string">'c'</span>);</span><br><span class="line"><span class="comment"># char(ascii_num)	把ascii码数值转换为对应的字符</span></span><br><span class="line"><span class="keyword">select</span> <span class="built_in">char</span>(<span class="number">101</span>,<span class="number">116</span>,<span class="number">99</span>);</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190830/hbByh6GEF2.png" alt="image"></p>
+<p>base64函数是MySQL5.6添加的 ==&gt; so，MariaDB 5.5.60 是没有的<br>PS：MariaDB 10.0.5  才新增</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">convert</span>(<span class="string">'2019-11-22 12:22:05'</span>,<span class="built_in">date</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">convert</span>(<span class="string">'2019-11-22 12:22:05'</span>,<span class="built_in">time</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">convert</span>(<span class="string">'2019-11-22 12:22:05'</span>,datetime);</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://yuntu88.oss-cn-beijing.aliyuncs.com/fromlocal/2896251617@qq.com/20190830/zbHKnJadM2.png" alt="6"></p>
+<h4 id="其他系列"><a href="#其他系列" class="headerlink" title="其他系列"></a>其他系列</h4><table>
+<thead>
+<tr>
+<th>函数名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>if(expr,a,b)</td>
+<td>如果表达式expr成立返回结果a，否则返回结果b</td>
+</tr>
+<tr>
+<td>updatexml(xml_target,xpath_expr,new_xml)</td>
+<td>返回替换的XML片段</td>
+</tr>
+<tr>
+<td>extractvalue(xml_frag, xpath_expr)</td>
+<td>使用XPath表示法从XML字符串中提取值</td>
+</tr>
+<tr>
+<td>sleep(time)</td>
+<td>休眠time秒</td>
+</tr>
+<tr>
+<td>#### 读写文件</td>
+<td></td>
+</tr>
+</tbody></table>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#load_file()读取本地文件</span></span><br><span class="line"><span class="comment">#into outfile()写文件</span></span><br><span class="line"><span class="comment">#注意secure_file_priv的值</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="string">'mysql'</span> <span class="keyword">INTO</span> <span class="keyword">OUTFILE</span> <span class="string">'/tmp/mysql</span></span><br><span class="line"><span class="string">SELECT LOAD_FILE('</span>/tmp/mysql<span class="string">')</span></span><br><span class="line"><span class="string">#可利用此函数写一句话，读取配置文件</span></span><br></pre></td></tr></table></figure>
+
+<p>参考资料：信安之路-Bryan的文档</p>
+<p><a href="https://www.runoob.com/mysql/mysql-tutorial.html" target="_blank" rel="noopener">MYSQL函数菜鸟教程</a></p>
+</div><div class="tags"></div><div class="post-nav"><a class="pre" href="/2019/09/03/集合和映射/">集合和映射</a><a class="next" href="/2019/08/25/OSI参考模型的理解/">OSI参考模型的理解</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"><input type="hidden" name="sitesearch" value="http://yoursite.com"></form></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/信安之路/">信安之路</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/基础知识/">基础知识</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/安全/">安全</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/读书/">读书</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/转载/">转载</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"><a href="/tags/web安全-ctf/" style="font-size: 15px;">web安全 ctf</a> <a href="/tags/随笔/" style="font-size: 15px;">随笔</a> <a href="/tags/计算机网络/" style="font-size: 15px;">计算机网络</a> <a href="/tags/博客搭建/" style="font-size: 15px;">博客搭建</a> <a href="/tags/安全/" style="font-size: 15px;">安全</a> <a href="/tags/基础/" style="font-size: 15px;">基础</a> <a href="/tags/数据结构/" style="font-size: 15px;">数据结构</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2019/10/04/3.代码执行与命令执行/">代码执行与命令执行</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/09/20/2.文件包含/">文件包含</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/09/15/1.文件上传/">文件上传</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/09/14/desc相关例题/">desc相关注入</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/09/13/order by/">order by，insert相关注入</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/09/12/bool型盲注/">bool型盲注</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/09/10/基于时间盲注的部分相关函数/">基于时间盲注的部分相关函数</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/09/07/约束条件的安全测试——报错注入/">约束条件的安全测试_报错注入</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/09/05/宽字节注入/">宽字节注入</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/09/03/集合和映射/">集合和映射</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> 友情链接</i></div><ul></ul><a target="_blank"></a><ul></ul><a target="_blank"></a><ul></ul><a target="_blank"></a></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2019 <a href="/." rel="nofollow">人间且慢行.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css"><script type="text/javascript" color="0,0,0" opacity="0.5" zindex="-2" count="50" src="//lib.baomitu.com/canvas-nest.js/2.0.4/canvas-nest.umd.js"></script><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>
